@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.employeereferral.model.Employee" table="employee">
+        <id name="id" type="int" column="id">
+            <generator class="native" />
+        </id>
+        <property name="name" type="string" column="name" length="112" not-null="true" />
+        <property name="email" type="string" column="email" length="112" not-null="false" />
+        <property name="phone" type="string" column="phone" length="15" not-null="false" />
+        <property name="employeeId" type="string" column="employee_id" length="56" not-null="true" />
+        <property name="password" type="string" column="password" length="256" not-null="true" />
+        <property name="designation" type="string" column="designation" length="512" not-null="false" />
+        <property name="address" type="string" column="country" length="512" not-null="false" />
+    </class>
+    
+    <class name="com.employeereferral.model.Candidate" table="candidate">
+        <id name="id" type="int" column="id">
+            <generator class="native" />
+        </id>
+        <property name="name" type="string" column="name" length="112" not-null="true" />
+        <property name="email" type="string" column="email" length="112" not-null="true" />
+        <property name="phone" type="string" column="phone" length="15" not-null="false" />
+        <property name="alternateNumber" type="string" column="alternate_number" length="15" not-null="false" />
+        <property name="experience" type="string" column="experience" length="112" not-null="true" />
+        <property name="skills" type="string" column="skills" length="1024" not-null="true" />
+        <property name="status" type="string" column="status" length="112" not-null="false" />
+        <property name="candidateId" type="string" column="candidate_id" length="112" not-null="true" />
+        <property name="resume" type="binary" column="resume" not-null="true" />
+        <property name="resumeName" type="string" column="resume_name" length="112" not-null="true" />
+        <property name="referredFor" type="string" column="referred_for" length="512" not-null="true" />
+        <property name="referredBy" type="string" column="referred_by" length="56" not-null="true" />
+    </class>
+    
+</hibernate-mapping>

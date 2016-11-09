@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="../css/login.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+</head>
+<body data-ng-app="loginApp" data-ng-controller="loginController">
+<!-- <div class="container">
+  <h2>Login Form</h2>
+  <form>
+  	
+    <div class="form-group">
+     	<input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId" data-ng-keypress="checkIfEnterKeyWasPressed($event)">
+    </div>
+    <div class="form-group">
+     	<input type="password" placeholder="Enter Password" data-ng-model="password" data-ng-keypress="checkIfEnterKeyWasPressed($event)"><br/>
+    </div>
+    <button type="submit" class="btn btn-default" data-ng-click="login()">Login</button>
+	<button type="submit" class="btn btn-default" data-ng-click="register()">Register</button>
+  </form>
+</div> -->
+
+<div style="text-align:center">
+<h2 style="text-decoration: underline">Login Form</h2>
+<form>
+<input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId">
+<input type="password" placeholder="Enter Password" data-ng-model="password"><br/>
+<button type="submit" data-ng-click="login()" data-ng-keypress="checkIfEnterKeyWasPressed($event)">Login</button>
+<button type="submit" data-ng-click="register()">Register</button>
+</form>
+<!-- <table>
+	<tr>
+		<td width=5%><b style="align:center;width:100%;margin: 0px 12px 12px 0px;padding: 10px 10px;">Employee ID</b></td>
+		<td width=95%><input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId" data-ng-keypress="checkIfEnterKeyWasPressed($event)"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Password</b></td>
+		<td width=95%><input type="password" placeholder="Enter Password" data-ng-model="password" data-ng-keypress="checkIfEnterKeyWasPressed($event)"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td style="align:center;width:100%">
+			<button type="submit" data-ng-click="login()">Login</button>
+			<button type="submit" data-ng-click="register()">Register</button>
+		</td>
+	</tr>
+</table> -->
+</div>
+</body>
+
+<script src="login.js"></script>
+</html>
