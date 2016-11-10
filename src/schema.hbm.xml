@@ -24,12 +24,13 @@
         <property name="phone" type="string" column="phone" length="15" not-null="false" />
         <property name="alternateNumber" type="string" column="alternate_number" length="15" not-null="false" />
         <property name="experience" type="string" column="experience" length="112" not-null="true" />
-        <property name="skills" type="string" column="skills" length="1024" not-null="true" />
+        <property name="skills" type="string" column="skills" length="1024" not-null="false" />
         <property name="status" type="string" column="status" length="112" not-null="false" />
-        <property name="candidateId" type="string" column="candidate_id" length="112" not-null="true" />
-        <property name="resume" type="binary" column="resume" not-null="true" />
+        <property name="description" type="string" column="description" length="1024" not-null="false" />
+        <property name="candidateId" type="string" column="candidate_id" length="112" not-null="false" />
+        <property name="resume" type="binary" column="resume" not-null="true" length="16777216"/>
         <property name="resumeName" type="string" column="resume_name" length="112" not-null="true" />
-        <property name="referredFor" type="string" column="referred_for" length="512" not-null="true" />
+        <property name="role" type="string" column="role" length="512" not-null="false" />
         <property name="referredBy" type="string" column="referred_by" length="56" not-null="true" />
     </class>
     

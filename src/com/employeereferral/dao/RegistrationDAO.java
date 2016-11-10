@@ -36,9 +36,9 @@ public class RegistrationDAO {
 	}
 
 	public boolean doesEmployeeExist(String employeeId) {
-		String query = "From Employee where employeeId = ?";
+		String query = "From Employee where employeeId = :employeeId";
 		Query<?> q = getSession().createQuery(query);
-		q.setParameter(0, employeeId);
+		q.setParameter("employeeId", employeeId);
 		if(q.getResultList().size() > 0)
 			return true;
 		return false;

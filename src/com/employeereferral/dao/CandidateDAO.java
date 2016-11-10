@@ -1,5 +1,7 @@
 package com.employeereferral.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -27,9 +29,9 @@ public class CandidateDAO {
 	}
 	
 	public boolean doesCandidateExist(String email) {
-		String query = "From Candidate where email = ?";
+		String query = "From Candidate where email = :email";
 		Query<?> q = getSession().createQuery(query);
-		q.setParameter(0, email);
+		q.setParameter("email", email);
 		if(q.getResultList().size() > 0)
 			return true;
 		return false;
@@ -42,6 +44,14 @@ public class CandidateDAO {
 	
 	public void updateCandidate(Candidate candidate) {
 		getSession().update(candidate);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Candidate> getMyReferrals(String employeeId) {
+		String query = "From Candidate where referredBy = :referredBy";
+		Query<?> q = getSession().createQuery(query);
+		q.setParameter("referredBy", employeeId);
+		return (List<Candidate>) q.getResultList();
 	}
 	
 	public static void main(String[] args) {
@@ -63,6 +73,17 @@ public class CandidateDAO {
 		}
 		cfg.setProperties(properties);
 		System.out.println(cfg.buildSessionFactory().openSession().createQuery("From User").getResultList());*/
+	}
+
+	@SuppressWarnings("unchecked")
+	public Candidate getCandidateById(String id) {
+		String query = "From Candidate where id = :id";
+		Query<?> q = getSession().createQuery(query);
+		q.setParameter("id", Integer.parseInt(id));
+		List<Candidate> candidateList = (List<Candidate>) q.getResultList();
+		if(candidateList.size() > 0)
+			return candidateList.get(0);
+		return null;
 	}
 
 }

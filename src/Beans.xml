@@ -12,8 +12,8 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
     
     <context:property-placeholder location="classpath:database.properties"/>
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<!-- destroy-method="close"> -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
 
 		<property name="driverClassName" value="${database.driver}"></property>
 		<property name="url" value="${database.url}"></property>

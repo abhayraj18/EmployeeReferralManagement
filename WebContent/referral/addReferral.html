@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration</title>
+<link rel="stylesheet" type="text/css" href="../css/referral.css">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<body>
+
+<h2 style="text-decoration: underline">Candidate Details</h2>
+<form>
+<input type="text" placeholder="Enter Name(Mandatory)" data-ng-model="name">
+<input type="text" placeholder="Enter Email(Mandatory)" data-ng-model="email">
+<input type="text" placeholder="Enter Phone(Mandatory)" data-ng-model="phone">
+<input type="text" placeholder="Enter Alternate Number" data-ng-model="alternateNumber">
+<select data-ng-model="experience" data-ng-options="x for x in experiences"></select>
+<!-- <select data-ng-model="referredFor" data-ng-options="x for x in languages"></select> -->
+<input type="text" placeholder="Applying for Role" data-ng-model="role">
+<textarea placeholder="Enter Address" data-ng-model="address"></textarea>
+<input type="file" id="file1" name="file" data-ng-model="resume" data-ng-files="getTheFiles($files)" /><br/>
+<button data-ng-click="submitDetails()" value="Submit" >Submit</button>
+</form>
+<!-- <table>
+	<tr>
+		<td width=5%><b>Name*:</b></td>
+		<td width=95%><input type="text" placeholder="Enter Name" data-ng-model="name"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Employee Id*:</b></td>
+		<td width=95%><input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Password*:</b></td>
+		<td width=95%><input type="password" placeholder="Enter Password" data-ng-model="password"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Email:</b></td>
+		<td width=95%><input type="text" placeholder="Enter Email Id" data-ng-model="email"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Phone:</b></td>
+		<td width=95%><input type="text" placeholder="Enter Phone Number" data-ng-model="phone"></td>
+	</tr>
+	<tr>
+		<td width=5%><b>Designation*:</b></td>
+		<td width=95%><select data-ng-model="designation" data-ng-options="x for x in designations"></select></td>
+	</tr>
+	
+	<tr>
+		<td width=5%><b>Address:</b></td>
+		<td width=95%><textarea placeholder="Enter Address" data-ng-model="address" style="align:center;width:100%"></textarea></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td style="align:center;width:100%;text-align:center">
+			<button type="submit" data-ng-click="register()" data-ng-keypress="checkIfEnterKeyWasPressed($event)">Submit</button>
+		</td>
+	</tr>
+</table> -->
+</body>
+<script src="referral.js"></script>
+</html>

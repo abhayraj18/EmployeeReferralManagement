@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../css/referral.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div data-ng-if="referralList.length > 0">
+  <table>
+      <tr>
+      	<td>Candidate Id</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td>Alternate Number</td>
+        <td>Experience</td>
+        <td>Role</td>
+        <td>Status</td>
+        <td>Description</td>
+        <td>Resume</td>
+      </tr>
+      <tr data-ng-repeat="candidate in referralList">
+      	<td>{{candidate.candidateId}}</td>
+		<td>{{candidate.name}}</td>
+		<td>{{candidate.email}}</td>
+		<td>{{candidate.phone}}</td>
+		<td>{{candidate.alternateNumber}}</td>
+		<td>{{candidate.experience}}</td>
+		<td>{{candidate.role}}</td>
+		<td>{{candidate.status}}</td>
+		<td>{{candidate.description}}</td>
+		<td><a href="" target="_blank" data-ng-click="downloadCandidateResume(candidate.id)">{{candidate.resume}}</a></td>
+	  </tr>
+  </table>
+</div>
+<div data-ng-if="referralList.length == 0" style="text-align:center;font-size:30px">
+No records found<br/>
+<span><a href="index.html#/addNewReferral/{{employeeId}}">Add New</a></span>
+</div>
+</body>
+<script src="referral.js"></script>
+</html>

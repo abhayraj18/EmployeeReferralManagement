@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.employeereferral.dao.LoginDAO;
 import com.employeereferral.pojo.LoginInfo;
+import com.employeereferral.utils.CommonUtils;
 import com.employeereferral.utils.ResponseUtils;
 
 @Component
@@ -49,14 +50,11 @@ public class LoginService {
 	@Path("/get-logged-in-employee")
 	public Response getLoggedInEmployee() throws Exception {
 		try {
-			String loggedInEmployeeId = (String) request.getSession().getAttribute("empId");
-			if(loggedInEmployeeId != null)
-				return ResponseUtils.sendResponse(200, loggedInEmployeeId);
-			else
-				return ResponseUtils.sendResponse(500, "Session Expired");
+			String loggedInEmployeeId = CommonUtils.checkSession(request);
+			return ResponseUtils.sendResponse(200, loggedInEmployeeId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseUtils.sendResponse(200, "Invalid credentials");
+			return ResponseUtils.sendResponse(500, e.getMessage());
 		}
 	}
 	

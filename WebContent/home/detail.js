@@ -1,5 +1,21 @@
-var loginApp = angular.module("myPageApp", []);
-loginApp.controller("myPageController", function($scope, $http, $window){
+var loginApp = angular.module("homePageApp", ['ngRoute', 'referralApp']);
+loginApp.config(['$routeProvider', function ($routeProvider) {
+	$routeProvider.when('/getMyReferrals/:employeeId', {
+		templateUrl: '../referral/getReferral.html',
+		controller: 'getReferralController'
+	}).
+	when('/addNewReferral/:employeeId', {
+		templateUrl: '../referral/addReferral.html',
+		controller: 'addReferralController'
+	}).
+	otherwise({
+		//redirectTo: '/login'
+	});
+}
+]);
+
+loginApp.controller("homePageController", function($scope, $http, $window){
+	$scope.employeeId = "";
 	$scope.init = function init(){
 		var req = {
 				 method: 'GET',
@@ -10,11 +26,11 @@ loginApp.controller("myPageController", function($scope, $http, $window){
 				 //data: dataObj,
 			}
 		$http(req).success(function(data, status, headers, config) {
-			$scope.message = data;
-			alert(data);
+			$scope.employeeId = data;
 		}).error(function(data, status, headers, config) {
 			alert(data);
-			$window.location.href = "../login/login.html";
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
 		});
 	}
 	
@@ -33,35 +49,24 @@ loginApp.controller("myPageController", function($scope, $http, $window){
 			alert(data);
 		});
 	}
+	
 	$scope.getMyReferrals = function getMyReferrals(){
-		if(!($scope.username)){
-			alert("Please fill username");
-			return;
-		}
-		if(!($scope.password)){
-			alert("Please fill password");
-			return;
-		}
-		
-		var dataObj = {};
-		dataObj["userName"] = $scope.username;
-		dataObj["password"]= $scope.password;
-		
 		var req = {
-				 method: 'POST',
-				 url: '../rest/login/get-logged-in-employee',
-				 /* headers: {
-				   'Content-Type': 'application/json'
-				 }, */
-				 data: dataObj,
+				 method: 'GET',
+				 url: '../rest/candidate/get-my-referrals/'+$scope.employeeId,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {
-			$scope.message = data.message;
-			alert(data.message);
+			$scope.message = data;
+			$scope.showMe = false;
+			if(data.size > 0){
+				$scope.showMe = true;
+			}
+			alert(data);
 		}).error(function(data, status, headers, config) {
-			alert(data.message);
-			$window.location.href = "../login/login.html";
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
 		});
 	}
 	

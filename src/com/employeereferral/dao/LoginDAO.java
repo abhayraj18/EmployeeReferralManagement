@@ -29,10 +29,10 @@ public class LoginDAO {
 	
 	public boolean authenticateUser(LoginInfo loginInfo) {
 		String encryptedPassword = EncryptionUtils.encrypt(loginInfo.getPassword(), EncryptionUtils.secretKey);
-		String query = "From Employee where employeeId = ? and password = ?";
+		String query = "From Employee where employeeId = :employeeId and password = :password";
 		Query<?> q = getSession().createQuery(query);
-		q.setParameter(0, loginInfo.getEmployeeId());
-		q.setParameter(1, encryptedPassword);
+		q.setParameter("employeeId", loginInfo.getEmployeeId());
+		q.setParameter("password", encryptedPassword);
 		if(q.getResultList().isEmpty())
 			return false;
 		return true;

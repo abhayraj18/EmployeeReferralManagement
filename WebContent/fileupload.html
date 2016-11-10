@@ -50,10 +50,10 @@
 
             // NOW UPLOAD THE FILES.
             $scope.uploadFiles = function () {
-			var dataObj = {};
-			dataObj["userName"] = $scope.username;
-			dataObj["password"]= $scope.password;
-			formdata.append("emp", angular.toJson(dataObj));
+				var dataObj = {};
+				dataObj["userName"] = $scope.username;
+				dataObj["password"]= $scope.password;
+				formdata.append("emp", angular.toJson(dataObj));
                 var request = {
                     method: 'POST',
                     url: 'rest/file/upload',
@@ -67,9 +67,9 @@
                 $http(request)
                     .success(function (d) {
                         alert(d);
-                    })
+                	})
                     .error(function () {
-                    });
+                	});
             }
         });
 </script>

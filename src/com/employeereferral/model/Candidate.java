@@ -13,10 +13,11 @@ public class Candidate implements Serializable{
 	private String experience;
 	private String skills;
 	private String status;
+	private String description;
 	private String candidateId;
 	private byte[] resume;
 	private String resumeName;
-	private String referredFor;
+	private String role;
 	private String referredBy;
 	
 	public Integer getId() {
@@ -67,6 +68,12 @@ public class Candidate implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public String getCandidateId() {
 		return candidateId;
 	}
@@ -85,11 +92,11 @@ public class Candidate implements Serializable{
 	public void setResumeName(String resumeName) {
 		this.resumeName = resumeName;
 	}
-	public String getReferredFor() {
-		return referredFor;
+	public String getRole() {
+		return role;
 	}
-	public void setReferredFor(String referredFor) {
-		this.referredFor = referredFor;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	public String getReferredBy() {
 		return referredBy;

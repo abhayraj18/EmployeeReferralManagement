@@ -6,9 +6,10 @@
 <link rel="stylesheet" type="text/css" href="../css/login.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body data-ng-app="myPageApp" data-ng-controller="myPageController" data-ng-init="init()">
+<body data-ng-app="homePageApp" data-ng-controller="homePageController" data-ng-init="init()">
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -16,13 +17,15 @@
       <a class="navbar-brand" href="#">Employee Referral Management</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="#" data-ng-click="getMyReferrals()">My Referrals</a></li>
-      <li><a href="#" data-ng-click="addNewReferral()">New Referral</a></li>
+      <li><a href="#/getMyReferrals/{{employeeId}}">My Referrals</a></li>
+      <li><a href="#/addNewReferral/{{employeeId}}">New Referral</a></li>
       <li><a href="#" data-ng-click="logout()">Logout</a></li>
     </ul>
   </div>
 </nav>
+<div data-ng-view></div>
 </body>
 
 <script src="detail.js"></script>
+<script src="../referral/referral.js"></script>
 </html>
