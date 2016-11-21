@@ -120,7 +120,7 @@ public class CandidateService {
 			Candidate candidate = candidateDAO.getCandidateById(id);
 			if(candidate != null){
 				byte[] resume = candidate.getResume();
-				File f = new File(candidate.getResumeName());
+				File f = new File(System.getProperty("java.io.tmpdir") + File.separator + candidate.getResumeName());
 				OutputStream os = new FileOutputStream(f);
 				os.write(resume);
 				os.close();
