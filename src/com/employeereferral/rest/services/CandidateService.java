@@ -99,6 +99,8 @@ public class CandidateService {
 				candidateJson.put("status", candidate.getStatus());
 				candidateJson.put("description", candidate.getDescription() != null ? candidate.getDescription() : "");
 				candidateJson.put("resume", candidate.getResumeName());
+				candidateJson.put("isCallLetterSent", candidate.isCallLetterSent());
+				candidateJson.put("callLetterSentBy", candidate.getCallLetterSentBy());
 				responseList.add(candidateJson);
 			}
 			return ResponseUtils.sendResponse(200, new Gson().toJson(responseList));
@@ -115,7 +117,7 @@ public class CandidateService {
 		try {
 			CommonUtils.checkSession(request);
 			if(id == null || id.equals(""))
-				return ResponseUtils.sendResponse(500, "Please send Employee ID");
+				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
 
 			Candidate candidate = candidateDAO.getCandidateById(id);
 			if(candidate != null){
@@ -133,6 +135,26 @@ public class CandidateService {
 					      .header("Content-Disposition", "attachment; filename=" + candidate.getResumeName())
 					      .header("filename", candidate.getResumeName())
 					      .build();
+			}
+			return ResponseUtils.sendResponse(500, "Candidate does not exist");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseUtils.sendResponse(500, e.getMessage());
+		}
+	}
+	
+	@GET
+	@Path("/send-call-letter/{id}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response sendCallLetter(@PathParam("id") String id) throws Exception {
+		try {
+			CommonUtils.checkSession(request);
+			if(id == null || id.equals(""))
+				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
+
+			Candidate candidate = candidateDAO.getCandidateById(id);
+			if(candidate != null){
+				
 			}
 			return ResponseUtils.sendResponse(500, "Candidate does not exist");
 		} catch (Exception e) {

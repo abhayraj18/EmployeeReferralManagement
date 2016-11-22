@@ -23,6 +23,8 @@
         <td>Status</td>
         <td>Description</td>
         <td>Resume</td>
+        <td>Call Letter Status</td>
+        <td>Call Letter Sent By</td>
       </tr>
       <tr data-ng-repeat="candidate in referralList">
       	<td>{{candidate.candidateId}}</td>
@@ -35,6 +37,9 @@
 		<td>{{candidate.status}}</td>
 		<td>{{candidate.description}}</td>
 		<td><a href="" target="_blank" data-ng-click="downloadCandidateResume(candidate.id)">{{candidate.resume}}</a></td>
+		<td data-ng-if="candidate.isCallLetterSent">Call Letter Sent</td>
+		<td data-ng-if="!candidate.isCallLetterSent"><a href="#" data-ng-click="sendCallLetter(candidate.id)">Send Call Letter</a></td>
+		<td>{{candidate.callLetterSentBy}}</td>
 	  </tr>
   </table>
 </div>

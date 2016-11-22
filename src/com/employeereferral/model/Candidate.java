@@ -19,6 +19,8 @@ public class Candidate implements Serializable{
 	private String resumeName;
 	private String role;
 	private String referredBy;
+	private boolean callLetterSent;
+	private String callLetterSentBy;
 	
 	public Integer getId() {
 		return id;
@@ -103,6 +105,18 @@ public class Candidate implements Serializable{
 	}
 	public void setReferredBy(String referredBy) {
 		this.referredBy = referredBy;
+	}
+	public boolean isCallLetterSent() {
+		return callLetterSent;
+	}
+	public void setCallLetterSent(boolean callLetterSent) {
+		this.callLetterSent = callLetterSent;
+	}
+	public String getCallLetterSentBy() {
+		return callLetterSentBy;
+	}
+	public void setCallLetterSentBy(String callLetterSentBy) {
+		this.callLetterSentBy = callLetterSentBy;
 	}
 	
 }

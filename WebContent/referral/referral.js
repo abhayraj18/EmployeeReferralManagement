@@ -61,6 +61,23 @@ referralApp.controller("getReferralController", function($scope, $http, $window,
 				$window.location.href = "../login/login.html";
 		});
 	}
+	
+	$scope.sendCallLetter = function sendCallLetter(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/send-call-letter/'+id,
+			}
+		/*url = '../rest/candidate/download-candidate-resume/'+id;
+		$window.location.href = url;*/
+		$http(req).success(function(data, status, headers, config) {
+			alert("Call Letter Sent");
+			$window.location.href = "index.html#/getMyReferrals/"+$scope.employeeId;
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
 });
 
 referralApp.directive('ngFiles', ['$parse', function ($parse) {
