@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +28,9 @@ import org.springframework.stereotype.Controller;
 
 import com.employeereferral.dao.CandidateDAO;
 import com.employeereferral.model.Candidate;
+import com.employeereferral.model.Employee;
 import com.employeereferral.utils.CommonUtils;
+import com.employeereferral.utils.EmailUtils;
 import com.employeereferral.utils.ResponseUtils;
 import com.google.gson.Gson;
 
@@ -72,18 +75,21 @@ public class CandidateService {
 	
 	@SuppressWarnings("unchecked")
 	@GET
-	@Path("/get-my-referrals/{employeeId}")
-	public Response getMyReferrals(@PathParam("employeeId") String employeeId) throws Exception {
+	@Path("/get-my-referrals/{pageNumber}/{employeeId}")
+	public Response getMyReferrals(@PathParam("pageNumber") String pageNumber, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
-			String loggedInEmployeeId = CommonUtils.checkSession(request);
+			Employee loggedInEmployee = CommonUtils.checkSession(request);
 			if(employeeId == null || employeeId.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Employee ID");
 			
-			if(!employeeId.equalsIgnoreCase(loggedInEmployeeId))
+			if(!employeeId.equalsIgnoreCase(loggedInEmployee.getEmployeeId()))
 				return ResponseUtils.sendResponse(500, "Invalid Employee ID");
 			
-			List<Candidate> candidateList = candidateDAO.getMyReferrals(employeeId);
+			if(pageNumber == null || pageNumber.equals(""))
+				return ResponseUtils.sendResponse(500, "Please send page number");
 			
+			List<Candidate> candidateList = candidateDAO.getMyReferrals(employeeId, pageNumber);
+			JSONObject responseJson = new JSONObject();
 			List<JSONObject> responseList = new ArrayList<JSONObject>();
 			for(Candidate candidate : candidateList){
 				JSONObject candidateJson = new JSONObject();
@@ -99,11 +105,52 @@ public class CandidateService {
 				candidateJson.put("status", candidate.getStatus());
 				candidateJson.put("description", candidate.getDescription() != null ? candidate.getDescription() : "");
 				candidateJson.put("resume", candidate.getResumeName());
-				candidateJson.put("isCallLetterSent", candidate.isCallLetterSent());
-				candidateJson.put("callLetterSentBy", candidate.getCallLetterSentBy());
+				candidateJson.put("isChecked", candidate.isChecked());
+				candidateJson.put("checkedBy", candidate.getCheckedBy());
 				responseList.add(candidateJson);
 			}
-			return ResponseUtils.sendResponse(200, new Gson().toJson(responseList));
+			responseJson.put("totalSize", candidateDAO.getAllMyReferralSize(employeeId));
+			responseJson.put("referrals", responseList);
+			return ResponseUtils.sendResponse(200, responseJson.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseUtils.sendResponse(500, e.getMessage());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/get-all-referrals/{pageNumber}")
+	public Response getAllReferrals(@PathParam("pageNumber") String pageNumber) throws Exception {
+		try {
+			CommonUtils.checkSession(request);
+			if(pageNumber == null || pageNumber.equals(""))
+				return ResponseUtils.sendResponse(500, "Please send page number");
+			
+			List<Candidate> candidateList = candidateDAO.getAllReferrals(pageNumber);
+			List<JSONObject> responseList = new ArrayList<JSONObject>();
+			JSONObject responseJson = new JSONObject();
+			for(Candidate candidate : candidateList){
+				JSONObject candidateJson = new JSONObject();
+				candidateJson.put("id", candidate.getId());
+				candidateJson.put("name", candidate.getName());
+				candidateJson.put("email", candidate.getEmail());
+				candidateJson.put("phone", candidate.getPhone());
+				candidateJson.put("alternateNumber", candidate.getAlternateNumber() != null ? candidate.getAlternateNumber() : "");
+				candidateJson.put("experience", candidate.getExperience());
+				candidateJson.put("skills", candidate.getSkills() != null ? candidate.getSkills() : "");
+				candidateJson.put("role", candidate.getRole()!= null ? candidate.getRole() : "");
+				candidateJson.put("candidateId", candidate.getCandidateId());
+				candidateJson.put("status", candidate.getStatus());
+				candidateJson.put("description", candidate.getDescription() != null ? candidate.getDescription() : "");
+				candidateJson.put("resume", candidate.getResumeName());
+				candidateJson.put("isChecked", candidate.isChecked());
+				candidateJson.put("checkedBy", candidate.getCheckedBy());
+				responseList.add(candidateJson);
+			}
+			responseJson.put("totalSize", candidateDAO.getAllReferralSize());
+			responseJson.put("referrals", responseList);
+			return ResponseUtils.sendResponse(200, responseJson.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseUtils.sendResponse(500, e.getMessage());
@@ -148,13 +195,53 @@ public class CandidateService {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response sendCallLetter(@PathParam("id") String id) throws Exception {
 		try {
-			CommonUtils.checkSession(request);
+			Employee loggedInEmployee = CommonUtils.checkSession(request);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
 
 			Candidate candidate = candidateDAO.getCandidateById(id);
 			if(candidate != null){
-				
+				HashMap<String, String> mailDetail = new HashMap<String, String>();
+				mailDetail.put("candidateName", candidate.getName());
+				mailDetail.put("role", candidate.getRole());
+				String date = CommonUtils.getNextSaturday();
+				mailDetail.put("date", date);
+				mailDetail.put("location", CommonUtils.getLocation());
+				mailDetail.put("senderName", loggedInEmployee.getName());
+				mailDetail.put("senderDesignation", loggedInEmployee.getDesignation());
+				mailDetail.put("phone", CommonUtils.getPhoneNumber());
+				String emailBody = EmailUtils.getEmailBody(mailDetail, "EmailTemplates/call_letter.tpl");
+				String subject = "Interview call letter for the position of "+candidate.getRole();
+				EmailUtils.sendEmail(subject, emailBody, loggedInEmployee.getEmail(), candidate.getEmail());
+				candidate.setStatus("Call letter sent");
+				candidate.setChecked(true);
+				candidate.setCheckedBy(loggedInEmployee.getName() + " - " + loggedInEmployee.getEmployeeId());
+				candidateDAO.updateCandidate(candidate);
+				return ResponseUtils.sendResponse(200, "Call letter sent successfully");
+			}
+			return ResponseUtils.sendResponse(500, "Candidate does not exist");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseUtils.sendResponse(500, e.getMessage());
+		}
+	}
+	
+	@GET
+	@Path("/reject/{id}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response rejectCandidate(@PathParam("id") String id) throws Exception {
+		try {
+			Employee loggedInEmployee = CommonUtils.checkSession(request);
+			if(id == null || id.equals(""))
+				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
+
+			Candidate candidate = candidateDAO.getCandidateById(id);
+			if(candidate != null){
+				candidate.setStatus("Rejected");
+				candidate.setChecked(true);
+				candidate.setCheckedBy(loggedInEmployee.getName() + " - " + loggedInEmployee.getEmployeeId());
+				candidateDAO.updateCandidate(candidate);
+				return ResponseUtils.sendResponse(200, "Rejected");
 			}
 			return ResponseUtils.sendResponse(500, "Candidate does not exist");
 		} catch (Exception e) {

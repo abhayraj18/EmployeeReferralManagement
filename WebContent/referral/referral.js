@@ -1,6 +1,7 @@
 var referralApp = angular.module("referralApp", []);
-referralApp.controller("getReferralController", function($scope, $http, $window, $routeParams){
-	$scope.employeeId = $routeParams.employeeId;
+referralApp.controller("getReferralController", function($scope, $rootScope, $http, $window){
+	$scope.employeeId = $rootScope.employeeId;
+	$scope.designation = $rootScope.designation;
 	if(!$scope.employeeId){
 		var req = {
 				 method: 'GET',
@@ -12,29 +13,42 @@ referralApp.controller("getReferralController", function($scope, $http, $window,
 			}
 	
 		$http(req).success(function(data, status, headers, config) {
-			$scope.employeeId = data;
-			getMyReferrals();
+			$scope.employeeId = data.employeeId;
+			$rootScope.employeeId = data.employeeId;
+			$rootScope.designation = data.designation;
+			getMyReferrals(0);
 		}).error(function(data, status, headers, config) {
 			alert(data);
 			if(data == "Session Expired")
 				$window.location.href = "../login/login.html";
 		});
 	}else
-		getMyReferrals();
+		getMyReferrals(0);
 	
-	function getMyReferrals(){
+	function getMyReferrals(pageNo){
+		$scope.getMyReferrals(pageNo);
+	}
+	
+	$scope.getMyReferrals = function getMyReferrals(pageNo){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/get-my-referrals/'+$scope.employeeId,
+				 url: '../rest/candidate/get-my-referrals/'+pageNo+'/'+$scope.employeeId,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {
-			$scope.referralList = data;
+			$scope.referralList = data.referrals;
+			$scope.total = data.totalSize;
+			$scope.Math = window.Math;
+			$scope.noOfPages = Math.ceil($scope.total/10);
 		}).error(function(data, status, headers, config) {
 			alert(data);
 			if(data == "Session Expired")
 				$window.location.href = "../login/login.html";
 		});
+	}
+	
+	$scope.getNumber = function(num) {
+		return new Array(num);   
 	}
 	
 	$scope.downloadCandidateResume = function downloadCandidateResume(id){
@@ -67,11 +81,132 @@ referralApp.controller("getReferralController", function($scope, $http, $window,
 				 method: 'GET',
 				 url: '../rest/candidate/send-call-letter/'+id,
 			}
+		$http(req).success(function(data, status, headers, config) {
+			alert(data);
+			$window.location.href = "index.html#/getMyReferrals";
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$scope.rejectCandidate = function rejectCandidate(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/reject/'+id,
+			}
+		$http(req).success(function(data, status, headers, config) {
+			//alert(data);
+			$window.location.href = "index.html#/getMyReferrals";
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+});
+
+referralApp.controller("getAllReferralController", function($scope, $rootScope, $http, $window){
+	$scope.employeeId = $rootScope.employeeId;
+	$scope.designation = $rootScope.designation;
+	if(!$scope.employeeId){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/login/get-logged-in-employee',
+				 /* headers: {
+				   'Content-Type': 'application/json'
+				 }, */
+				 //data: dataObj,
+			}
+	
+		$http(req).success(function(data, status, headers, config) {
+			$scope.employeeId = data.employeeId;
+			$rootScope.employeeId = data.employeeId;
+			$rootScope.designation = data.designation;
+			getAllReferrals(0);
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}else
+		getAllReferrals(0);
+	
+	$scope.getAllReferrals = function getAllReferrals(pageNo){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/get-all-referrals/'+pageNo,
+			}
+		
+		$http(req).success(function(data, status, headers, config) {
+			$scope.referralList = data.referrals;
+			$scope.total = data.totalSize;
+			$scope.Math = window.Math;
+			$scope.noOfPages = Math.ceil($scope.total/10);
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	function getAllReferrals(pageNo){
+		$scope.getAllReferrals(pageNo);
+	}
+	
+	$scope.getNumber = function(num) {
+		return new Array(num);   
+	}
+	
+	$scope.downloadCandidateResume = function downloadCandidateResume(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/download-candidate-resume/'+id,
+			}
 		/*url = '../rest/candidate/download-candidate-resume/'+id;
 		$window.location.href = url;*/
 		$http(req).success(function(data, status, headers, config) {
-			alert("Call Letter Sent");
-			$window.location.href = "index.html#/getMyReferrals/"+$scope.employeeId;
+			var headers = headers();
+			var filename = headers['filename'];
+			var contentType = headers['content-type'];
+			var blob = new Blob([data], { type: contentType });
+			var url = URL.createObjectURL(blob);
+			var a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			a.target = '_blank';
+			a.click();
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$scope.sendCallLetter = function sendCallLetter(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/send-call-letter/'+id,
+			}
+		$http(req).success(function(data, status, headers, config) {
+			alert(data);
+			$window.location.href = "index.html#/getAllReferrals";
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$scope.rejectCandidate = function rejectCandidate(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/candidate/reject/'+id,
+			}
+		$http(req).success(function(data, status, headers, config) {
+			//alert(data);
+			$window.location.href = "index.html#/getAllReferrals";
 		}).error(function(data, status, headers, config) {
 			alert(data);
 			if(data == "Session Expired")
@@ -94,21 +229,21 @@ referralApp.directive('ngFiles', ['$parse', function ($parse) {
     }
 } ]);
 
-referralApp.controller("addReferralController", function($scope, $http, $window, $routeParams){
+referralApp.controller("addReferralController", function($scope, $rootScope, $http, $window){
 	$scope.experiences = ["Select Experience", "Fresher", "1-2 Years", "2-3 Years", "3-5 Years", "5-8 Years", "8-10 Years", ">10 Years"];
 	$scope.experience = $scope.experiences[0];
 	
 	/*$scope.languages = ["Java", ".NET", "AngularJS"];
 	$scope.referredFor = $scope.languages[0];*/
 	
-	$scope.employeeId = $routeParams.employeeId;
+	$scope.employeeId = $rootScope.employeeId;
 	if(!$scope.employeeId){
 		var req = {
 				 method: 'GET',
 				 url: '../rest/login/get-logged-in-employee'
 			}
 		$http(req).success(function(data, status, headers, config) {
-			$scope.employeeId = data;
+			$scope.employeeId = data.employeeId;
 		}).error(function(data, status, headers, config) {
 			alert(data);
 			if(data == "Session Expired")
@@ -152,7 +287,7 @@ referralApp.controller("addReferralController", function($scope, $http, $window,
         $http(req).success(function(data, status, headers, config) {
 			$scope.message = data;
 			alert(data);
-			$window.location.href = "index.html#/getMyReferrals/"+$scope.employeeId;
+			$window.location.href = "index.html#/getMyReferrals";
 		}).error(function(data, status, headers, config) {
 			alert(data);
 		});

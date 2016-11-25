@@ -47,10 +47,13 @@ public class CandidateDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Candidate> getMyReferrals(String employeeId) {
+	public List<Candidate> getMyReferrals(String employeeId, String pageNumber) {
+		int start = Integer.parseInt(pageNumber) * 10;
 		String query = "From Candidate where referredBy = :referredBy";
 		Query<?> q = getSession().createQuery(query);
 		q.setParameter("referredBy", employeeId);
+		q.setFirstResult(start);
+		q.setMaxResults(10);
 		return (List<Candidate>) q.getResultList();
 	}
 	
@@ -84,6 +87,26 @@ public class CandidateDAO {
 		if(candidateList.size() > 0)
 			return candidateList.get(0);
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Candidate> getAllReferrals(String pageNumber) {
+		int start = Integer.parseInt(pageNumber) * 10;
+		String query = "From Candidate";
+		Query<?> q = getSession().createQuery(query);
+		q.setFirstResult(start);
+		q.setMaxResults(10);
+		return (List<Candidate>) q.getResultList();
+	}
+
+	public int getAllMyReferralSize(String employeeId) {
+		String query = "Select id from Candidate where referredBy = :referredBy";
+		return getSession().createQuery(query).setParameter("referredBy", employeeId).getResultList().size();
+	}
+
+	public int getAllReferralSize() {
+		String query = "Select id from Candidate";
+		return getSession().createQuery(query).getResultList().size();
 	}
 
 }

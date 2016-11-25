@@ -32,8 +32,8 @@
         <property name="resumeName" type="string" column="resume_name" length="112" not-null="true" />
         <property name="role" type="string" column="role" length="512" not-null="false" />
         <property name="referredBy" type="string" column="referred_by" length="56" not-null="true" />
-        <property name="callLetterSent" type="boolean" column="is_call_letter_sent" not-null="true" />
-        <property name="callLetterSentBy" type="string" column="call_letter_sent_by" length="112" not-null="false" />
+        <property name="checked" type="boolean" column="is_checked" not-null="true" />
+        <property name="checkedBy" type="string" column="checked_by" length="112" not-null="false" />
     </class>
     
 </hibernate-mapping>

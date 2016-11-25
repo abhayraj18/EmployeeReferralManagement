@@ -39,14 +39,14 @@
   </table>
   <div style="text-align:right;margin-right:20%">
 	  <ul class="pagination">
-		  <li data-ng-repeat="i in getNumber(noOfPages) track by $index"><a href="#/getMyReferrals" data-ng-click="getMyReferrals($index)">{{$index+1}}</a></li>
+		  <li data-ng-repeat="i in getNumber(noOfPages) track by $index"><a href="#/getAllReferrals" data-ng-click="getAllReferrals($index)">{{$index+1}}</a></li>
 	  </ul>
   </div>
 </div>
-<div data-ng-if="referralList.length == 0" style="text-align:center;font-size:30px">
+<!-- <div data-ng-if="referralList.length == 0" style="text-align:center;font-size:30px">
 No records found<br/>
 <span><a href="index.html#/addNewReferral">Add New</a></span>
-</div>
+</div> -->
 </body>
 <script src="referral.js"></script>
 </html>

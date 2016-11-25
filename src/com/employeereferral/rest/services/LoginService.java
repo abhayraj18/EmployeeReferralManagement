@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
 import com.employeereferral.dao.LoginDAO;
+import com.employeereferral.model.Employee;
 import com.employeereferral.pojo.LoginInfo;
 import com.employeereferral.utils.CommonUtils;
 import com.employeereferral.utils.ResponseUtils;
@@ -31,11 +32,11 @@ public class LoginService {
 	@Path("/do-login")
 	public Response doLogin(LoginInfo loginInfo) throws Exception {
 		try {
-			boolean isAuthenticated = loginDAO.authenticateUser(loginInfo);
-			if(isAuthenticated){
+			Employee employee = loginDAO.authenticateUser(loginInfo);
+			if(employee != null){
 				JSONObject response = new JSONObject();
 				response.put("empId", loginInfo.getEmployeeId());
-				request.getSession().setAttribute("empId", loginInfo.getEmployeeId());
+				request.getSession().setAttribute("employee", employee);
 				return ResponseUtils.sendResponse(200, response.toString());
 			}
 			else
@@ -46,12 +47,16 @@ public class LoginService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/get-logged-in-employee")
 	public Response getLoggedInEmployee() throws Exception {
 		try {
-			String loggedInEmployeeId = CommonUtils.checkSession(request);
-			return ResponseUtils.sendResponse(200, loggedInEmployeeId);
+			Employee loggedInEmployee = CommonUtils.checkSession(request);
+			JSONObject response = new JSONObject();
+			response.put("employeeId", loggedInEmployee.getEmployeeId());
+			response.put("designation", loggedInEmployee.getDesignation());
+			return ResponseUtils.sendResponse(200, response.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseUtils.sendResponse(500, e.getMessage());
@@ -62,7 +67,7 @@ public class LoginService {
 	@Path("/do-logout")
 	public void doLogout() throws Exception {
 		try {
-			request.getSession().removeAttribute("empId");
+			request.getSession().removeAttribute("employee");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

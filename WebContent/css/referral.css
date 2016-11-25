@@ -36,11 +36,11 @@ h2 {
 }
 
 table {
-	border-style: double;
-    text-align: center;
-    width: 60%;
-    margin-left: 20%;
-    margin-right: 20%;
+	border-style: initial;
+	text-align: center;
+	width: 60%;
+	margin-left: 20%;
+	margin-right: 20%;
 }
 
 td {
@@ -58,4 +58,8 @@ textarea {
     width: 60%;
     margin: 8px 0px;
     padding: 12px 10px;
+}
+
+.disabled {
+  cursor: not-allowed;
 }

@@ -32,7 +32,7 @@ loginApp.controller("loginController", function($scope, $http, $window){
 		
 		$http(req).success(function(data, status, headers, config) {
 			$scope.message = data;
-			$window.location.href = "../home/index.html";
+			$window.location.href = "../home/index.html#/getMyReferrals";
 		}).error(function(data, status, headers, config) {
 			alert(data);
 			return false;

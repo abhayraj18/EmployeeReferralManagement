@@ -8,6 +8,10 @@ loginApp.controller("registrationController", function($scope, $http, $window){
 	        $scope.register();
 	}
 	
+	$scope.login = function Register(){
+		$window.location.href = "../login/login.html";
+	}
+	
 	$scope.register = function register(){
 		if(!($scope.name)){
 			alert("Please fill name");

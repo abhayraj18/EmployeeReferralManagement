@@ -17,8 +17,9 @@
       <a class="navbar-brand" href="#">Employee Referral Management</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="#/getMyReferrals/{{employeeId}}">My Referrals</a></li>
-      <li><a href="#/addNewReferral/{{employeeId}}">New Referral</a></li>
+      <li><a href="#/getMyReferrals">My Referrals</a></li>
+      <li><a href="#/addNewReferral">New Referral</a></li>
+      <li data-ng-if="designation=='HR'"><a href="#/getAllReferrals">All Referrals</a></li>
       <li><a href="#" data-ng-click="logout()">Logout</a></li>
     </ul>
   </div>

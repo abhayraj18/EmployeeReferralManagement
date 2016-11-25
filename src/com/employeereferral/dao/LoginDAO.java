@@ -1,11 +1,14 @@
 package com.employeereferral.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.employeereferral.model.Employee;
 import com.employeereferral.pojo.LoginInfo;
 import com.employeereferral.utils.EncryptionUtils;
 
@@ -27,15 +30,17 @@ public class LoginDAO {
 		return getSessionFactory().getCurrentSession();
 	}
 	
-	public boolean authenticateUser(LoginInfo loginInfo) {
+	@SuppressWarnings("unchecked")
+	public Employee authenticateUser(LoginInfo loginInfo) {
 		String encryptedPassword = EncryptionUtils.encrypt(loginInfo.getPassword(), EncryptionUtils.secretKey);
 		String query = "From Employee where employeeId = :employeeId and password = :password";
 		Query<?> q = getSession().createQuery(query);
 		q.setParameter("employeeId", loginInfo.getEmployeeId());
 		q.setParameter("password", encryptedPassword);
-		if(q.getResultList().isEmpty())
-			return false;
-		return true;
+		List<Employee> list = (List<Employee>) q.getResultList();
+		if(list.isEmpty())
+			return null;
+		return list.get(0);
 	}
 	
 	public static void main(String[] args) {
