@@ -12,6 +12,9 @@ loginApp.config(['$routeProvider', function ($routeProvider) {
 		templateUrl: '../referral/getAllReferral.html',
 		controller: 'getAllReferralController'
 	}).
+	when('/logout', {
+		
+	}).
 	otherwise({
 		templateUrl: '../referral/getReferral.html',
 		controller: 'getReferralController'
@@ -55,7 +58,7 @@ loginApp.controller("homePageController", function($scope, $rootScope, $http, $w
 		$http(req).success(function(data, status, headers, config) {
 			$window.location.href = "../login/login.html";
 		}).error(function(data, status, headers, config) {
-			alert(data);
+			//alert(data);
 		});
 	}
 	

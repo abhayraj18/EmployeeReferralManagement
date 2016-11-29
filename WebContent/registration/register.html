@@ -6,17 +6,18 @@
 <link rel="stylesheet" type="text/css" href="../css/registration.css">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-<body data-ng-app="registrationApp" data-ng-controller="registrationController">
+<body data-ng-app="registrationApp" data-ng-controller="registrationController" data-ng-init="init()">
 
-<h2 style="text-decoration: underline">Registration Form</h2>
 <form>
-<input type="text" placeholder="Enter Name(Mandatory)" data-ng-model="name">
-<input type="text" placeholder="Enter Employee ID(Mandatory)" data-ng-model="employeeId">
-<input type="password" placeholder="Enter Password(Mandatory)" data-ng-model="password">
-<input type="text" placeholder="Enter Email Id" data-ng-model="email">
-<input type="text" placeholder="Enter Phone Number" data-ng-model="phone">
-<select data-ng-model="designation" data-ng-options="x for x in designations"></select>
-<textarea placeholder="Enter Address" data-ng-model="address"></textarea>
+<h2 style="text-decoration: underline">Registration Form</h2>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Name(Mandatory)" data-ng-model="name" id="name">
+<input type="text" placeholder="Enter Employee ID(Mandatory)" data-ng-model="employeeId" id="employeeId">
+<input type="password" placeholder="Enter Password(Mandatory)" data-ng-model="password" id="password">
+<input type="text" placeholder="Enter Email Id" data-ng-model="email" id="email">
+<input type="text" placeholder="Enter Phone Number" data-ng-model="phone" id="phone">
+<select data-ng-model="designation" data-ng-options="x for x in designations" id="designation"></select>
+<textarea placeholder="Enter Address" data-ng-model="address" id="address"></textarea>
 <button type="submit" data-ng-click="register()" data-ng-keypress="checkIfEnterKeyWasPressed($event)">Submit</button>
 <button type="submit" data-ng-click="login()">Login</button>
 </form>

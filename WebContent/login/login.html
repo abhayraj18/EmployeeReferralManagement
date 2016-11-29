@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 </head>
-<body data-ng-app="loginApp" data-ng-controller="loginController">
+<body data-ng-app="loginApp" data-ng-controller="loginController" data-ng-init="init()">
 <!-- <div class="container">
   <h2>Login Form</h2>
   <form>
@@ -27,10 +27,11 @@
 </div> -->
 
 <div style="text-align:center">
-<h2 style="text-decoration: underline">Login Form</h2>
 <form>
-<input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId">
-<input type="password" placeholder="Enter Password" data-ng-model="password"><br/>
+<h2 style="text-decoration: underline">Login Form</h2>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Employee ID" data-ng-model="employeeId" id="employeeId">
+<input type="password" placeholder="Enter Password" data-ng-model="password" id="password"><br/>
 <button type="submit" data-ng-click="login()" data-ng-keypress="checkIfEnterKeyWasPressed($event)">Login</button>
 <button type="submit" data-ng-click="register()">Register</button>
 </form>

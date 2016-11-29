@@ -8,17 +8,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 <body>
 
-<h2 style="text-decoration: underline">Candidate Details</h2>
 <form>
-<input type="text" placeholder="Enter Name(Mandatory)" data-ng-model="name">
-<input type="text" placeholder="Enter Email(Mandatory)" data-ng-model="email">
-<input type="text" placeholder="Enter Phone(Mandatory)" data-ng-model="phone">
-<input type="text" placeholder="Enter Alternate Number" data-ng-model="alternateNumber">
-<select data-ng-model="experience" data-ng-options="x for x in experiences"></select>
+<h2 style="text-decoration: underline">Candidate Details</h2>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Name(Mandatory)" data-ng-model="name" id="name">
+<input type="text" placeholder="Enter Email(Mandatory)" data-ng-model="email" id="email">
+<input type="text" placeholder="Enter Phone(Mandatory)" data-ng-model="phone" id="phone">
+<input type="text" placeholder="Enter Alternate Number" data-ng-model="alternateNumber" id="alternateNumber">
+<select data-ng-model="experience" data-ng-options="x for x in experiences" id="experience"></select>
 <!-- <select data-ng-model="referredFor" data-ng-options="x for x in languages"></select> -->
-<input type="text" placeholder="Applying for Role" data-ng-model="role">
-<textarea placeholder="Enter Address" data-ng-model="address"></textarea>
-<input type="file" id="file1" name="file" data-ng-model="resume" data-ng-files="getTheFiles($files)" /><br/>
+<input type="text" placeholder="Applying for Role" data-ng-model="role" id="role">
+<textarea placeholder="Enter Address" data-ng-model="address" id="address"></textarea>
+<input type="file" name="file" data-ng-model="resume" data-ng-files="getTheFiles($files)" id="resume"/><br/>
 <button data-ng-click="submitDetails()" value="Submit" >Submit</button>
 </form>
 <!-- <table>

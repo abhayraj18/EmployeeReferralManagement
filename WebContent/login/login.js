@@ -6,15 +6,21 @@ loginApp.controller("loginController", function($scope, $http, $window){
 	        $scope.login();
 	}
 	
+	$scope.init = function init(){
+		$window.document.getElementById("employeeId").focus();
+	}
+	
 	$scope.login = function login(){
 		if(!($scope.employeeId)){
-			alert("Please fill Employee Id");
-			$scope.empIdError = "Please fill Employee Id";
+			//alert("Please fill Employee Id");
+			$scope.errorMessage = "Please fill Employee Id";
+			$window.document.getElementById("employeeId").focus();
 			return false;
 		}
 		if(!($scope.password)){
-			alert("Please fill password");
-			$scope.password = "Please fill password";
+			//alert("Please fill password");
+			$scope.errorMessage = "Please fill password";
+			$window.document.getElementById("password").focus();
 			return false;
 		}
 		var dataObj = {};
@@ -34,7 +40,8 @@ loginApp.controller("loginController", function($scope, $http, $window){
 			$scope.message = data;
 			$window.location.href = "../home/index.html#/getMyReferrals";
 		}).error(function(data, status, headers, config) {
-			alert(data);
+			//alert(data);
+			$scope.errorMessage = data;
 			return false;
 		});
 	}

@@ -43,7 +43,7 @@ public class LoginService {
 				return ResponseUtils.sendResponse(500, "Invalid credentials");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseUtils.sendResponse(200, "Invalid credentials");
+			return ResponseUtils.sendResponse(500, "Invalid credentials");
 		}
 	}
 	

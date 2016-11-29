@@ -12,21 +12,33 @@ loginApp.controller("registrationController", function($scope, $http, $window){
 		$window.location.href = "../login/login.html";
 	}
 	
+	$scope.init = function init(){
+		$window.document.getElementById("name").focus();
+	}
+	
 	$scope.register = function register(){
 		if(!($scope.name)){
-			alert("Please fill name");
+			//alert("Please fill name");
+			$scope.errorMessage = "Please fill name";
+			$window.document.getElementById("name").focus();
 			return;
 		}
 		if(!($scope.employeeId)){
-			alert("Please fill employeeId");
+			//alert("Please fill Employee Id");
+			$scope.errorMessage = "Please fill Employee Id";
+			$window.document.getElementById("employeeId").focus();
 			return;
 		}
 		if(!($scope.password)){
-			alert("Please fill password");
+			//alert("Please fill password");
+			$scope.errorMessage = "Please fill password";
+			$window.document.getElementById("password").focus();
 			return;
 		}
 		if(!($scope.designation) || $scope.designation == "Select Designation"){
-			alert("Please select your designation");
+			//alert("Please select your designation");
+			$scope.errorMessage = "Please select your designation";
+			$window.document.getElementById("designation").focus();
 			return;
 		}
 		var dataObj = {};
@@ -52,7 +64,8 @@ loginApp.controller("registrationController", function($scope, $http, $window){
 			alert(data);
 			$window.location.href = "../login/login.html";
 		}).error(function(data, status, headers, config) {
-			alert(data);
+			//alert(data);
+			$scope.errorMessage = data;
 		});
 	}
 });

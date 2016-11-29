@@ -235,7 +235,6 @@ referralApp.controller("addReferralController", function($scope, $rootScope, $ht
 	
 	/*$scope.languages = ["Java", ".NET", "AngularJS"];
 	$scope.referredFor = $scope.languages[0];*/
-	
 	$scope.employeeId = $rootScope.employeeId;
 	if(!$scope.employeeId){
 		var req = {
@@ -260,8 +259,30 @@ referralApp.controller("addReferralController", function($scope, $rootScope, $ht
     };
     
 	$scope.submitDetails = function submitDetails(){
+		if(!($scope.name)){
+			$scope.errorMessage = "Please fill candidate name";
+			$window.document.getElementById("name").focus();
+			return;
+		}
+		if(!($scope.email)){
+			$scope.errorMessage = "Please fill candidate email";
+			$window.document.getElementById("email").focus();
+			return;
+		}
+		if(!($scope.phone)){
+			$scope.errorMessage = "Please fill candidate phone";
+			$window.document.getElementById("phone").focus();
+			return;
+		}
+		if(!($scope.experience) || $scope.experience == "Select Experience"){
+			$scope.errorMessage = "Please select candidate's experience";
+			$window.document.getElementById("experience").focus();
+			return;
+		}
 		if(!$scope.resume){
-			alert("Please select resume");
+			//alert("Please select resume");
+			$scope.errorMessage = "Please select resume";
+			$window.document.getElementById("resume").focus();
 			return;
 		}
 		formdata.delete('candidate');
@@ -289,7 +310,8 @@ referralApp.controller("addReferralController", function($scope, $rootScope, $ht
 			alert(data);
 			$window.location.href = "index.html#/getMyReferrals";
 		}).error(function(data, status, headers, config) {
-			alert(data);
+			//alert(data);
+			$scope.errorMessage = data;
 		});
 	}
 });
