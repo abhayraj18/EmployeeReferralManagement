@@ -35,6 +35,12 @@ loginApp.controller("registrationController", function($scope, $http, $window){
 			$window.document.getElementById("password").focus();
 			return;
 		}
+		if(!($scope.email)){
+			//alert("Please fill password");
+			$scope.errorMessage = "Please fill email";
+			$window.document.getElementById("email").focus();
+			return;
+		}
 		if(!($scope.designation) || $scope.designation == "Select Designation"){
 			//alert("Please select your designation");
 			$scope.errorMessage = "Please select your designation";
