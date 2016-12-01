@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.employeereferral.model.Candidate;
+import com.employeereferral.model.Employee;
 
 @Transactional
-public class CandidateDAO {
+public class EmployeeDAO {
 	
 	@Autowired
 	SessionFactory sessionFactory;
@@ -88,7 +89,7 @@ public class CandidateDAO {
 			return candidateList.get(0);
 		return null;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<Candidate> getAllReferrals(String pageNumber) {
 		int start = Integer.parseInt(pageNumber) * 10;
@@ -107,6 +108,17 @@ public class CandidateDAO {
 	public int getAllReferralSize() {
 		String query = "Select id from Candidate";
 		return getSession().createQuery(query).getResultList().size();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Employee getEmployeebyEmployeeId(String employeeId) {
+		String query = "From Employee where employeeId = :employeeId";
+		Query<?> q = getSession().createQuery(query);
+		q.setParameter("employeeId", employeeId);
+		List<Employee> list = (List<Employee>) q.getResultList();
+		if(list.isEmpty())
+			return null;
+		return list.get(0);
 	}
 
 }

@@ -26,7 +26,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 
-import com.employeereferral.dao.CandidateDAO;
+import com.employeereferral.dao.EmployeeDAO;
 import com.employeereferral.model.Candidate;
 import com.employeereferral.model.Employee;
 import com.employeereferral.utils.CommonUtils;
@@ -35,34 +35,34 @@ import com.employeereferral.utils.ResponseUtils;
 import com.google.gson.Gson;
 
 @Controller
-@Path("/candidate")
-public class CandidateService {
+@Path("/employee")
+public class EmployeeService {
 
 	@Context
 	HttpServletRequest request;
 	
 	@Inject
-	CandidateDAO candidateDAO;
+	EmployeeDAO employeeDAO;
 	
 	@POST
-	@Path("/add")
+	@Path("/add-candidate")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response addCandidate(@FormDataParam("candidate") String candidateDetails,
 			@FormDataParam("resume") InputStream uploadedInputStream,
 			@FormDataParam("resume") FormDataContentDisposition fileDetail) throws Exception {
 		try {
-			CommonUtils.checkSession(request);
+			//CommonUtils.checkSession(request);
 			Candidate candidate = new Gson().fromJson(candidateDetails, Candidate.class);
-			boolean doesCandidateExist = candidateDAO.doesCandidateExist(candidate.getEmail());
+			boolean doesCandidateExist = employeeDAO.doesCandidateExist(candidate.getEmail());
 			if(!doesCandidateExist){
 				byte[] bytes = IOUtils.toByteArray(uploadedInputStream);
 				candidate.setResume(bytes);
 				candidate.setResumeName(fileDetail.getFileName());
 				candidate.setStatus("Submitted");
-				candidate = candidateDAO.addCandidate(candidate);
+				candidate = employeeDAO.addCandidate(candidate);
 				String candidateId = candidate.getReferredBy().toUpperCase() + "-" + candidate.getId();
 				candidate.setCandidateId(candidateId);
-				candidateDAO.updateCandidate(candidate);
+				employeeDAO.updateCandidate(candidate);
 			}
 			else
 				return ResponseUtils.sendResponse(500, "Candidate already exists with given email id : "+candidate.getEmail());
@@ -78,17 +78,18 @@ public class CandidateService {
 	@Path("/get-my-referrals/{pageNumber}/{employeeId}")
 	public Response getMyReferrals(@PathParam("pageNumber") String pageNumber, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
-			Employee loggedInEmployee = CommonUtils.checkSession(request);
+			//Employee loggedInEmployee = CommonUtils.checkSession(request);
+//			//Employee loggedInEmployee = employeeDAO.getEmployeebyEmployeeId(employeeId);
 			if(employeeId == null || employeeId.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Employee ID");
 			
-			if(!employeeId.equalsIgnoreCase(loggedInEmployee.getEmployeeId()))
-				return ResponseUtils.sendResponse(500, "Invalid Employee ID");
+			/*if(!employeeId.equalsIgnoreCase(loggedInEmployee.getEmployeeId()))
+				return ResponseUtils.sendResponse(500, "Invalid Employee ID");*/
 			
 			if(pageNumber == null || pageNumber.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send page number");
 			
-			List<Candidate> candidateList = candidateDAO.getMyReferrals(employeeId, pageNumber);
+			List<Candidate> candidateList = employeeDAO.getMyReferrals(employeeId, pageNumber);
 			JSONObject responseJson = new JSONObject();
 			List<JSONObject> responseList = new ArrayList<JSONObject>();
 			for(Candidate candidate : candidateList){
@@ -109,7 +110,7 @@ public class CandidateService {
 				candidateJson.put("checkedBy", candidate.getCheckedBy());
 				responseList.add(candidateJson);
 			}
-			responseJson.put("totalSize", candidateDAO.getAllMyReferralSize(employeeId));
+			responseJson.put("totalSize", employeeDAO.getAllMyReferralSize(employeeId));
 			responseJson.put("referrals", responseList);
 			return ResponseUtils.sendResponse(200, responseJson.toString());
 		} catch (Exception e) {
@@ -123,11 +124,11 @@ public class CandidateService {
 	@Path("/get-all-referrals/{pageNumber}")
 	public Response getAllReferrals(@PathParam("pageNumber") String pageNumber) throws Exception {
 		try {
-			CommonUtils.checkSession(request);
+			//CommonUtils.checkSession(request);
 			if(pageNumber == null || pageNumber.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send page number");
 			
-			List<Candidate> candidateList = candidateDAO.getAllReferrals(pageNumber);
+			List<Candidate> candidateList = employeeDAO.getAllReferrals(pageNumber);
 			List<JSONObject> responseList = new ArrayList<JSONObject>();
 			JSONObject responseJson = new JSONObject();
 			for(Candidate candidate : candidateList){
@@ -148,7 +149,7 @@ public class CandidateService {
 				candidateJson.put("checkedBy", candidate.getCheckedBy());
 				responseList.add(candidateJson);
 			}
-			responseJson.put("totalSize", candidateDAO.getAllReferralSize());
+			responseJson.put("totalSize", employeeDAO.getAllReferralSize());
 			responseJson.put("referrals", responseList);
 			return ResponseUtils.sendResponse(200, responseJson.toString());
 		} catch (Exception e) {
@@ -162,11 +163,11 @@ public class CandidateService {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response downloadCandidateResume(@PathParam("id") String id) throws Exception {
 		try {
-			CommonUtils.checkSession(request);
+			//CommonUtils.checkSession(request);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
 
-			Candidate candidate = candidateDAO.getCandidateById(id);
+			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				byte[] resume = candidate.getResume();
 				File f = new File(System.getProperty("java.io.tmpdir") + File.separator + candidate.getResumeName());
@@ -191,15 +192,16 @@ public class CandidateService {
 	}
 	
 	@GET
-	@Path("/send-call-letter/{id}")
+	@Path("/send-call-letter/{id}/{employeeId}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response sendCallLetter(@PathParam("id") String id) throws Exception {
+	public Response sendCallLetter(@PathParam("id") String id, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
-			Employee loggedInEmployee = CommonUtils.checkSession(request);
+			//Employee loggedInEmployee = CommonUtils.checkSession(request);
+			Employee loggedInEmployee = employeeDAO.getEmployeebyEmployeeId(employeeId);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
 
-			Candidate candidate = candidateDAO.getCandidateById(id);
+			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				HashMap<String, String> mailDetail = new HashMap<String, String>();
 				mailDetail.put("candidateName", candidate.getName());
@@ -216,7 +218,7 @@ public class CandidateService {
 				candidate.setStatus("Call letter sent");
 				candidate.setChecked(true);
 				candidate.setCheckedBy(loggedInEmployee.getName() + " - " + loggedInEmployee.getEmployeeId());
-				candidateDAO.updateCandidate(candidate);
+				employeeDAO.updateCandidate(candidate);
 				return ResponseUtils.sendResponse(200, "Call letter sent successfully");
 			}
 			return ResponseUtils.sendResponse(500, "Candidate does not exist");
@@ -227,20 +229,21 @@ public class CandidateService {
 	}
 	
 	@GET
-	@Path("/reject/{id}")
+	@Path("/reject/{id}/{employeeId}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response rejectCandidate(@PathParam("id") String id) throws Exception {
+	public Response rejectCandidate(@PathParam("id") String id, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
-			Employee loggedInEmployee = CommonUtils.checkSession(request);
+			//Employee loggedInEmployee = CommonUtils.checkSession(request);
+			Employee loggedInEmployee = employeeDAO.getEmployeebyEmployeeId(employeeId);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
 
-			Candidate candidate = candidateDAO.getCandidateById(id);
+			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				candidate.setStatus("Rejected");
 				candidate.setChecked(true);
 				candidate.setCheckedBy(loggedInEmployee.getName() + " - " + loggedInEmployee.getEmployeeId());
-				candidateDAO.updateCandidate(candidate);
+				employeeDAO.updateCandidate(candidate);
 				return ResponseUtils.sendResponse(200, "Rejected");
 			}
 			return ResponseUtils.sendResponse(500, "Candidate does not exist");

@@ -65,7 +65,7 @@ loginApp.controller("homePageController", function($scope, $rootScope, $http, $w
 	$scope.getMyReferrals = function getMyReferrals(pageNo){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/get-my-referrals/'+pageNo+'/'+$scope.employeeId,
+				 url: '../rest/employee/get-my-referrals/'+pageNo+'/'+$scope.employeeId,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {
@@ -83,7 +83,7 @@ loginApp.controller("homePageController", function($scope, $rootScope, $http, $w
 	$scope.getAllReferrals = function getAllReferrals(pageNo){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/get-all-referrals/'+pageNo,
+				 url: '../rest/employee/get-all-referrals/'+pageNo,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {

@@ -35,7 +35,8 @@ public class LoginService {
 			Employee employee = loginDAO.authenticateUser(loginInfo);
 			if(employee != null){
 				JSONObject response = new JSONObject();
-				response.put("empId", loginInfo.getEmployeeId());
+				response.put("employeeId", employee.getEmployeeId());
+				response.put("designation", employee.getDesignation());
 				request.getSession().setAttribute("employee", employee);
 				return ResponseUtils.sendResponse(200, response.toString());
 			}

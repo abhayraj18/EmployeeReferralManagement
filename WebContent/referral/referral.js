@@ -32,7 +32,7 @@ referralApp.controller("getReferralController", function($scope, $rootScope, $ht
 	$scope.getMyReferrals = function getMyReferrals(pageNo){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/get-my-referrals/'+pageNo+'/'+$scope.employeeId,
+				 url: '../rest/employee/get-my-referrals/'+pageNo+'/'+$scope.employeeId,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {
@@ -54,9 +54,9 @@ referralApp.controller("getReferralController", function($scope, $rootScope, $ht
 	$scope.downloadCandidateResume = function downloadCandidateResume(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/download-candidate-resume/'+id,
+				 url: '../rest/employee/download-candidate-resume/'+id,
 			}
-		/*url = '../rest/candidate/download-candidate-resume/'+id;
+		/*url = '../rest/employee/download-candidate-resume/'+id;
 		$window.location.href = url;*/
 		$http(req).success(function(data, status, headers, config) {
 			var headers = headers();
@@ -79,7 +79,7 @@ referralApp.controller("getReferralController", function($scope, $rootScope, $ht
 	$scope.sendCallLetter = function sendCallLetter(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/send-call-letter/'+id,
+				 url: '../rest/employee/send-call-letter/'+id+'/'+$scope.employeeId,
 			}
 		$http(req).success(function(data, status, headers, config) {
 			alert(data);
@@ -94,7 +94,7 @@ referralApp.controller("getReferralController", function($scope, $rootScope, $ht
 	$scope.rejectCandidate = function rejectCandidate(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/reject/'+id,
+				 url: '../rest/employee/reject/'+id+'/'+$scope.employeeId,
 			}
 		$http(req).success(function(data, status, headers, config) {
 			//alert(data);
@@ -136,7 +136,7 @@ referralApp.controller("getAllReferralController", function($scope, $rootScope, 
 	$scope.getAllReferrals = function getAllReferrals(pageNo){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/get-all-referrals/'+pageNo,
+				 url: '../rest/employee/get-all-referrals/'+pageNo,
 			}
 		
 		$http(req).success(function(data, status, headers, config) {
@@ -162,9 +162,9 @@ referralApp.controller("getAllReferralController", function($scope, $rootScope, 
 	$scope.downloadCandidateResume = function downloadCandidateResume(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/download-candidate-resume/'+id,
+				 url: '../rest/employee/download-candidate-resume/'+id,
 			}
-		/*url = '../rest/candidate/download-candidate-resume/'+id;
+		/*url = '../rest/employee/download-candidate-resume/'+id;
 		$window.location.href = url;*/
 		$http(req).success(function(data, status, headers, config) {
 			var headers = headers();
@@ -187,7 +187,7 @@ referralApp.controller("getAllReferralController", function($scope, $rootScope, 
 	$scope.sendCallLetter = function sendCallLetter(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/send-call-letter/'+id,
+				 url: '../rest/employee/send-call-letter/'+id+'/'+$scope.employeeId,
 			}
 		$http(req).success(function(data, status, headers, config) {
 			alert(data);
@@ -202,7 +202,7 @@ referralApp.controller("getAllReferralController", function($scope, $rootScope, 
 	$scope.rejectCandidate = function rejectCandidate(id){
 		var req = {
 				 method: 'GET',
-				 url: '../rest/candidate/reject/'+id,
+				 url: '../rest/employee/reject/'+id+'/'+$scope.employeeId,
 			}
 		$http(req).success(function(data, status, headers, config) {
 			//alert(data);
@@ -298,7 +298,7 @@ referralApp.controller("addReferralController", function($scope, $rootScope, $ht
 		formdata.append("candidate", angular.toJson(dataObj));
         var req = {
             method: 'POST',
-            url: '../rest/candidate/add',
+            url: '../rest/employee/add-candidate',
             data: formdata,
             headers: {
                 'Content-Type': undefined

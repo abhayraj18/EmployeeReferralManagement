@@ -60,7 +60,7 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="userDao" class="com.employeereferral.dao.CandidateDAO">
+	<bean id="employeeDAO" class="com.employeereferral.dao.EmployeeDAO">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 </beans>
