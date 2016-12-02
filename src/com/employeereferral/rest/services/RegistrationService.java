@@ -27,14 +27,30 @@ public class RegistrationService {
 	@Path("/register-employee")
 	public Response registerEmployee(Employee employee) throws Exception {
 		try {
+			if(employee == null)
+				throw new Exception("Please send details");
+			
 			boolean doesUserExist = registrationDAO.doesEmployeeExist(employee.getEmployeeId());
-			if(!doesUserExist)
+			if(!doesUserExist){
+				if(employee.getName() == null)
+					throw new Exception("Employee name is mandatory");
+				
+				if(employee.getEmployeeId() == null)
+					throw new Exception("Employee ID is mandatory");
+				
+				if(employee.getEmail() == null)
+					throw new Exception("Employee email id is mandatory");
+				
+				if(employee.getPassword() == null)
+					throw new Exception("Password is mandatory");
+				
 				registrationDAO.registerEmployee(employee);
+			}
 			else
 				return ResponseUtils.sendResponse(500, "Employee already exists with Employee ID : "+employee.getEmployeeId());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseUtils.sendResponse(200, "Employee could not be registered");
+			return ResponseUtils.sendResponse(500, e.getMessage());
 		}
 		return ResponseUtils.sendResponse(200, "Registered successfully");
 	}

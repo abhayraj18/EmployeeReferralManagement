@@ -166,7 +166,7 @@ public class EmployeeService {
 			//CommonUtils.checkSession(request);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
-
+			
 			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				byte[] resume = candidate.getResume();
@@ -178,7 +178,7 @@ public class EmployeeService {
 	            response.header("Content-Disposition", "attachment; filename="+f.getName().replace(' ', '_'));
 	            response.header("filename", candidate.getResumeName());
 	            return response.build();*/
-
+				
 				return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
 					      .header("Content-Disposition", "attachment; filename=" + candidate.getResumeName())
 					      .header("filename", candidate.getResumeName())
@@ -200,7 +200,7 @@ public class EmployeeService {
 			Employee loggedInEmployee = employeeDAO.getEmployeebyEmployeeId(employeeId);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
-
+			
 			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				HashMap<String, String> mailDetail = new HashMap<String, String>();
@@ -237,7 +237,7 @@ public class EmployeeService {
 			Employee loggedInEmployee = employeeDAO.getEmployeebyEmployeeId(employeeId);
 			if(id == null || id.equals(""))
 				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
-
+			
 			Candidate candidate = employeeDAO.getCandidateById(id);
 			if(candidate != null){
 				candidate.setStatus("Rejected");

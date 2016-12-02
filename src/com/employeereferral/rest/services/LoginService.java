@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
+import com.employeereferral.dao.EmployeeDAO;
 import com.employeereferral.dao.LoginDAO;
 import com.employeereferral.model.Employee;
 import com.employeereferral.pojo.LoginInfo;
@@ -27,12 +28,19 @@ public class LoginService {
 	@Inject
 	LoginDAO loginDAO;
 	
+	@Inject
+	EmployeeDAO employeeDAO;
+	
 	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/do-login")
 	public Response doLogin(LoginInfo loginInfo) throws Exception {
 		try {
-			Employee employee = loginDAO.authenticateUser(loginInfo);
+			Employee employee = employeeDAO.getEmployeebyEmployeeId(loginInfo.getEmployeeId());
+			if(employee == null)
+				return ResponseUtils.sendResponse(500, "Invalid Employee Id : "+loginInfo.getEmployeeId());
+			
+			employee = loginDAO.authenticateUser(loginInfo);
 			if(employee != null){
 				JSONObject response = new JSONObject();
 				response.put("employeeId", employee.getEmployeeId());
