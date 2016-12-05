@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="../css/login.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>-->
+</head>
+<body>
+
+<div style="text-align:center" style="width:100%">
+<div>
+<h1 style="text-align:center">Employee Referral Management</h1>
+</div>
+<form>
+<h3 style="text-decoration: underline">Login Form</h3>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Employee ID" [(ngModel)]="loginInfo.employeeId" name="employeeId" #employeeId>
+<input type="password" placeholder="Enter Password" [(ngModel)]="loginInfo.password" name="password" #password><br/>
+<button type="submit" (click)="login()" >Login</button>
+<button routerLink="../register">Register</button>
+</form>
+</div>
+</body>
+</html>

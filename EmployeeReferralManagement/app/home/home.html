@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" href="../css/login.css">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="home">Employee Referral Management</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a routerLink="getMyReferrals">My Referrals</a></li>
+      <li *ngIf="employee.designation=='HR'"><a routerLink="getAllReferrals">All Referrals</a></li>
+      <li><a routerLink="addNewReferral">New Referral</a></li>
+      <li><a style="cursor:pointer" (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<router-outlet></router-outlet>
+</body>
+</html>

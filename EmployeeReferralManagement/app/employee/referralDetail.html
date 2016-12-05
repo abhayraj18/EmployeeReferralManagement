@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Referrals</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<link rel="stylesheet" href="../css/bootstrap.min.css">-->
+  <script src="../js/bootstrap.min.js"></script>
+</head>
+<body>
+<div *ngIf="candidate" align="center" >
+  <h2 style="text-decoration: underline">Candidate Details</h2>
+  <table class="table table-bordered table-sm" style="max-width:25%">
+      <tr><td><b>Candidate Id</b></td><td>{{candidate.candidateId}}</td></tr>
+      <tr><td><b>Name</b></td><td>{{candidate.name}}</td></tr>
+      <tr><td><b>Email</b></td><td>{{candidate.email}}</td></tr>
+      <tr><td><b>Phone</b></td><td>{{candidate.phone}}</td></tr>
+      <tr><td><b>Alternate Number</b></td><td>{{candidate.alternateNumber}}</td></tr>
+      <tr><td><b>Experience</b></td><td>{{candidate.experience}}</td></tr>
+      <tr><td><b>Role</b></td><td>{{candidate.role}}</td></tr>
+      <tr><td><b>Resume</b></td>
+          <td><a target="_blank" style="cursor:pointer" (click)="downloadCandidateResume(candidate.id)"><span class="glyphicon glyphicon-download-alt"></span>{{candidate.resume}}</a></td></tr>
+      <tr><td></td><td *ngIf="!candidate.isChecked && employee.designation == 'HR'"><a (click)="sendCallLetter(candidate.id)" title="Send Call Letter" style="cursor:pointer"><span class="glyphicon glyphicon-ok"></span></a>
+        &nbsp;&nbsp;<a (click)="rejectCandidate(candidate.id)" title="Reject" style="cursor:pointer"><span class="glyphicon glyphicon-remove"></span></a></td>
+         <td *ngIf="employee.designation != 'HR' || candidate.isChecked">{{candidate.status}}</td>
+      </tr>
+  </table>
+  <button (click)="goBack()" value="Back" >Back</button>
+</div>
+</body>
+</html>

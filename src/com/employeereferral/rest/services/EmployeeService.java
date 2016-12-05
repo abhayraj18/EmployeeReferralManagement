@@ -193,7 +193,6 @@ public class EmployeeService {
 	
 	@GET
 	@Path("/send-call-letter/{id}/{employeeId}")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response sendCallLetter(@PathParam("id") String id, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
 			//Employee loggedInEmployee = CommonUtils.checkSession(request);
@@ -230,7 +229,6 @@ public class EmployeeService {
 	
 	@GET
 	@Path("/reject/{id}/{employeeId}")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response rejectCandidate(@PathParam("id") String id, @PathParam("employeeId") String employeeId) throws Exception {
 		try {
 			//Employee loggedInEmployee = CommonUtils.checkSession(request);
@@ -245,6 +243,39 @@ public class EmployeeService {
 				candidate.setCheckedBy(loggedInEmployee.getName() + " - " + loggedInEmployee.getEmployeeId());
 				employeeDAO.updateCandidate(candidate);
 				return ResponseUtils.sendResponse(200, "Rejected");
+			}
+			return ResponseUtils.sendResponse(500, "Candidate does not exist");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseUtils.sendResponse(500, e.getMessage());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/get-candidate-details/{id}")
+	public Response getCandidateDetails(@PathParam("id") String id) throws Exception {
+		try {
+			if(id == null || id.equals(""))
+				return ResponseUtils.sendResponse(500, "Please send Candidate ID");
+			
+			Candidate candidate = employeeDAO.getCandidateById(id);
+			if(candidate != null){
+				JSONObject candidateJson = new JSONObject();
+				candidateJson.put("id", candidate.getId());
+				candidateJson.put("name", candidate.getName());
+				candidateJson.put("email", candidate.getEmail());
+				candidateJson.put("phone", candidate.getPhone());
+				candidateJson.put("alternateNumber", candidate.getAlternateNumber() != null ? candidate.getAlternateNumber() : "");
+				candidateJson.put("experience", candidate.getExperience());
+				candidateJson.put("role", candidate.getRole()!= null ? candidate.getRole() : "");
+				candidateJson.put("candidateId", candidate.getCandidateId());
+				candidateJson.put("status", candidate.getStatus());
+				candidateJson.put("description", candidate.getDescription() != null ? candidate.getDescription() : "");
+				candidateJson.put("resume", candidate.getResumeName());
+				candidateJson.put("isChecked", candidate.isChecked());
+				candidateJson.put("checkedBy", candidate.getCheckedBy());
+				return ResponseUtils.sendResponse(200, candidateJson.toString());
 			}
 			return ResponseUtils.sendResponse(500, "Candidate does not exist");
 		} catch (Exception e) {

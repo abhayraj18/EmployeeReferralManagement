@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>All Referrals</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../css/referral.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <script src="../js/bootstrap.min.js"></script>
+</head>
+<body>
+<div *ngIf="referrals.length > 0" class="table-responsive">
+  <table class="table table-bordered table-sm" style="max-width:80%;margin-left:10%;">
+      <tr>
+      	<td><b>Candidate Id</b></td>
+        <td><b>Name</b></td>
+        <td><b>Email</b></td>
+        <td><b>Phone</b></td>
+        <td><b>Alternate Number</b></td>
+        <td><b>Experience</b></td>
+        <td><b>Role</b></td>
+        <td><b>Resume</b></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let candidate of referrals" (click)="showCandidateDetails(candidate.id)" style="cursor:pointer">
+      	<td>{{candidate.candidateId}}</td>
+        <td>{{candidate.name}}</td>
+        <td>{{candidate.email}}</td>
+        <td>{{candidate.phone}}</td>
+        <td>{{candidate.alternateNumber}}</td>
+        <td>{{candidate.experience}}</td>
+        <td>{{candidate.role}}</td>
+        <td><a target="_blank" style="cursor:pointer" (click)="downloadCandidateResume(candidate.id)"><span class="glyphicon glyphicon-download-alt"></span>{{candidate.resume}}</a></td>
+        <td *ngIf="!candidate.isChecked && employee.designation == 'HR'"><a (click)="sendCallLetter(candidate.id)" title="Send Call Letter" style="cursor:pointer"><span class="glyphicon glyphicon-ok"></span></a>
+        &nbsp;&nbsp;<a (click)="rejectCandidate(candidate.id)" title="Reject" style="cursor:pointer"><span class="glyphicon glyphicon-remove"></span></a></td>
+        <td *ngIf="employee.designation != 'HR' || candidate.isChecked">{{candidate.status}}</td>
+	  </tr>
+  </table>
+  <div style="text-align:right;margin-right:10%">
+	  <ul class="pagination">
+		  <li *ngFor="let page of getNumber(noOfPages); let i = index"><a routerLink="../getAllReferrals" (click)="getAllReferrals(i)">{{i+1}}</a></li>
+	  </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -10,8 +10,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div data-ng-if="referralList.length > 0">
-  <table>
+<div data-ng-if="referralList.length > 0" class="table-responsive">
+  <table class="table table-bordered table-sm" style="max-width:80%;margin-left:10%;">
       <tr>
       	<td><b>Candidate Id</b></td>
         <td><b>Name</b></td>
@@ -37,16 +37,12 @@
 		<td data-ng-if="designation != 'HR' || candidate.isChecked">{{candidate.status}}</td>
 	  </tr>
   </table>
-  <div style="text-align:right;margin-right:20%">
+  <div style="text-align:right;margin-right:10%">
 	  <ul class="pagination">
 		  <li data-ng-repeat="i in getNumber(noOfPages) track by $index"><a href="#/getAllReferrals" data-ng-click="getAllReferrals($index)">{{$index+1}}</a></li>
 	  </ul>
   </div>
 </div>
-<!-- <div data-ng-if="referralList.length == 0" style="text-align:center;font-size:30px">
-No records found<br/>
-<span><a href="index.html#/addNewReferral">Add New</a></span>
-</div> -->
 </body>
 <script src="referral.js"></script>
 </html>

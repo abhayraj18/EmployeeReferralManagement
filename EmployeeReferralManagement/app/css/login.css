@@ -1,0 +1,49 @@
+form {
+	 width: 20%;
+	 text-align: center;
+	 margin: 2% 40%;
+}
+
+input[type=text], input[type=password] {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+	padding: 8px 5px;
+    cursor: pointer;
+	width:29%
+}
+
+h2 {
+	text-align: center
+}
+
+table {
+	text-align:center;
+	width:20%;
+	margin-left:40%;
+	margin-right:40%;
+}
+
+td {
+	text-align:right
+}
+
+select {
+	width:100%;
+	margin: 0px 12px 12px 0px;
+	padding: 10px 10px;
+}
+textarea {
+	width:100%;
+	margin: 0px 12px 12px 0px;
+	padding: 5px 0px;
+}

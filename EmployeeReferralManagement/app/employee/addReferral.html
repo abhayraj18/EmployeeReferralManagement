@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration</title>
+<link rel="stylesheet" type="text/css" href="../css/referral.css">
+</head>
+<body>
+
+<form>
+<h2 style="text-decoration: underline">Candidate Details</h2>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Name(Mandatory)" [(ngModel)]="candidate.name" name="name" #name>
+<input type="text" placeholder="Enter Email(Mandatory)" [(ngModel)]="candidate.email" name="email" #email>
+<input type="text" placeholder="Enter Phone(Mandatory)" [(ngModel)]="candidate.phone" name="phone" #phone>
+<input type="text" placeholder="Enter Alternate Number" [(ngModel)]="candidate.alternateNumber" name="alterNateNumber">
+<select [(ngModel)]="candidate.experience" (ngModelChange)="onChange($event)" name="experience" #experience>
+    <option [value]="experience" *ngFor="let experience of experiences">{{experience}}</option>
+</select>
+<input type="text" placeholder="Applying for Role" [(ngModel)]="candidate.role" name="role">
+<textarea placeholder="Enter Address" [(ngModel)]="candidate.address" name="address"></textarea>
+<input type="file" [(ngModel)]="resumeName" (change)="onSelect($event)" name="resume" #resume/><br/>
+<button (click)="addCandidate()" value="Submit" >Submit</button>
+</form>
+</body>
+</html>

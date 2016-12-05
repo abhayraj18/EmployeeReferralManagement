@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration</title>
+<link rel="stylesheet" type="text/css" href="../css/registration.css">
+</head>
+<body>
+<div>
+<h1 style="text-align:center">Employee Referral Management</h1>
+</div>
+<form>
+<h3 style="text-decoration: underline">Registration Form</h3>
+<span style="color:red">{{errorMessage}}</span><br/>
+<input type="text" placeholder="Enter Name(Mandatory)" [(ngModel)]="employee.name" name="name" #name>
+<input type="text" placeholder="Enter Employee ID(Mandatory)" [(ngModel)]="employee.employeeId" name="employeeId" #employeeId>
+<input type="password" placeholder="Enter Password(Mandatory)" [(ngModel)]="employee.password" name="password" #password>
+<input type="text" placeholder="Enter Email Id(Mandatory)" [(ngModel)]="employee.email" name="email" #email>
+<input type="text" placeholder="Enter Phone Number" [(ngModel)]="employee.phone" name="phone">
+<select [(ngModel)]="employee.designation" (ngModelChange)="onChange($event)" name="designation" #designation>
+    <option [value]="designation" *ngFor="let designation of designations">{{designation}}</option>
+</select>
+<textarea placeholder="Enter Address" [(ngModel)]="employee.address" name="address"></textarea>
+<button type="submit" (click)="register()">Submit</button>
+<button routerLink="../login">Login</button>
+</form>
+</body>
+</html>
