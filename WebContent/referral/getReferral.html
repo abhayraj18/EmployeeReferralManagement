@@ -24,7 +24,7 @@
         <td></td>
       </tr>
       <tr data-ng-repeat="candidate in referralList">
-      	<td>{{candidate.candidateId}}</td>
+      	<td><a href="#/referral/{{candidate.id}}" style="cursor:pointer" title="View Candidate Details">{{candidate.candidateId}}</a></td>
 		<td>{{candidate.name}}</td>
 		<td>{{candidate.email}}</td>
 		<td>{{candidate.phone}}</td>

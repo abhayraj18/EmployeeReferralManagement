@@ -105,6 +105,10 @@ referralApp.controller("getReferralController", function($scope, $rootScope, $ht
 				$window.location.href = "../login/login.html";
 		});
 	}
+	
+	$scope.showCandidateDetails = function showCandidateDetails(id){
+		
+	}
 });
 
 referralApp.controller("getAllReferralController", function($scope, $rootScope, $http, $window){
@@ -314,4 +318,96 @@ referralApp.controller("addReferralController", function($scope, $rootScope, $ht
 			$scope.errorMessage = data;
 		});
 	}
+});
+
+referralApp.controller("referralDetailController", function($scope, $rootScope, $http, $window, $routeParams){
+	$scope.employeeId = $rootScope.employeeId;
+	$scope.designation = $rootScope.designation;
+	$scope.candidateId = $routeParams.id;
+	if(!$scope.employeeId){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/login/get-logged-in-employee',
+				 /* headers: {
+				   'Content-Type': 'application/json'
+				 }, */
+				 //data: dataObj,
+			}
+	
+		$http(req).success(function(data, status, headers, config) {
+			$scope.employeeId = data.employeeId;
+			$rootScope.employeeId = data.employeeId;
+			$rootScope.designation = data.designation;
+			getMyReferrals(0);
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}else{
+		getCandidateDetails($scope.candidateId);
+	}
+	
+	function getCandidateDetails(candidateId){
+		$scope.getCandidateDetails(candidateId);
+	}
+	
+	$scope.downloadCandidateResume = function downloadCandidateResume(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/employee/download-candidate-resume/'+id,
+			}
+		/*url = '../rest/employee/download-candidate-resume/'+id;
+		$window.location.href = url;*/
+		$http(req).success(function(data, status, headers, config) {
+			var headers = headers();
+			var filename = headers['filename'];
+			var contentType = headers['content-type'];
+			var blob = new Blob([data], { type: contentType });
+			var url = URL.createObjectURL(blob);
+			var a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			a.target = '_blank';
+			a.click();
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$scope.sendCallLetter = function sendCallLetter(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/employee/send-call-letter/'+id+'/'+$scope.employeeId,
+			}
+		$http(req).success(function(data, status, headers, config) {
+			alert(data);
+			$window.location.href = "index.html#/getAllReferrals";
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$scope.rejectCandidate = function rejectCandidate(id){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/employee/reject/'+id+'/'+$scope.employeeId,
+			}
+		$http(req).success(function(data, status, headers, config) {
+			//alert(data);
+			$window.location.href = "index.html#/getAllReferrals";
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
+	}
+	
+	$rootScope.goBack = function(){
+	    $window.history.back();
+	  }
 });

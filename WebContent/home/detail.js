@@ -12,6 +12,10 @@ loginApp.config(['$routeProvider', function ($routeProvider) {
 		templateUrl: '../referral/getAllReferral.html',
 		controller: 'getAllReferralController'
 	}).
+	when('/referral/:id', {
+		templateUrl: '../referral/referralDetail.html',
+		controller: 'referralDetailController'
+	}).
 	when('/logout', {
 		
 	}).
@@ -104,5 +108,20 @@ loginApp.controller("homePageController", function($scope, $rootScope, $http, $w
 	
 	$scope.register = function Register(){
 		$window.location.href = "../registration/register.html";
+	}
+	
+	$scope.getCandidateDetails = function getCandidateDetails(candidateId){
+		var req = {
+				 method: 'GET',
+				 url: '../rest/employee/get-candidate-details/'+candidateId,
+			}
+		
+		$http(req).success(function(data, status, headers, config) {
+			$scope.candidate = data;
+		}).error(function(data, status, headers, config) {
+			alert(data);
+			if(data == "Session Expired")
+				$window.location.href = "../login/login.html";
+		});
 	}
 });

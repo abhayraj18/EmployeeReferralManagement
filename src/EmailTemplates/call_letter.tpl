@@ -1,7 +1,11 @@
 <html>
 <body>
 Hi $mailDetail.candidateName,<br/>
-This is an interview call letter for the position of <b>$mailDetail.role</b> from Tavant Technologies.<br/><br/>
+#if($mailDetail.role)
+	This is an interview call letter for the position of <b>$mailDetail.role</b> from Tavant Technologies.<br/><br/>
+#else
+	This is an interview call letter from Tavant Technologies.<br/><br/>
+#end
 <b>Date:</b> $mailDetail.date<br/>
 <b>Venue:</b> $mailDetail.location<br/>
 <br/>
